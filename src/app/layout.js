@@ -1,18 +1,16 @@
 import './globals.css';
-import { ChakraProvider } from '@chakra-ui/react';
+import { Provider } from '@/components/ui/provider';
 
 export const metadata = {
   title: 'Micro-SaaS - Gráfico de Gantt',
-  description: 'Gerencie seus projetos com gráficos de Gantt intuitivos.',
+  description: 'Gestão de projetos simplificada com gráficos de Gantt.',
 };
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body>
-        <ChakraProvider>
-          {children}
-        </ChakraProvider>
+        <Provider>{children}</Provider>
       </body>
     </html>
   );
