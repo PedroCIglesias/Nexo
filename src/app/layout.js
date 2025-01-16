@@ -1,10 +1,9 @@
-// app/layout.js
 import './globals.css';
 import { ChakraProvider } from '@chakra-ui/react';
 
 export const metadata = {
   title: 'Micro-SaaS - Gráfico de Gantt',
-  description: 'Gerencie projetos com gráficos de Gantt intuitivos.',
+  description: 'Gerencie seus projetos com gráficos de Gantt intuitivos.',
 };
 
 export default function RootLayout({ children }) {

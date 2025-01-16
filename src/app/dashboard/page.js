@@ -1,10 +1,19 @@
-import { getFirestore, collection, getDocs } from "firebase/firestore";
-import app from "@/lib/firebaseConfig";
+import ProjectCard from '@/components/ProjectCard';
 
-const db = getFirestore(app);
+export default function Dashboard() {
+  const projects = [
+    { id: '1', name: 'Projeto 1', thumbnail: '/logo.png' },
+    { id: '2', name: 'Projeto 2', thumbnail: '/logo.png' },
+  ];
 
-export default async function fetchProjects() {
-  const querySnapshot = await getDocs(collection(db, "projects"));
-  const projects = querySnapshot.docs.map((doc) => doc.data());
-  console.log("Projetos:", projects);
+  return (
+    <div>
+      <h1>Seus Projetos</h1>
+      <div style={{ display: 'flex', gap: '1rem' }}>
+        {projects.map((project) => (
+          <ProjectCard key={project.id} project={project} />
+        ))}
+      </div>
+    </div>
+  );
 }
