@@ -1,14 +1,23 @@
 :root {
-  --background: #ffffff;
+  --background: #FFFFFF; /* Fundo geral do site */
   --foreground: #171717;
+  --header-background: #181834; /* Fundo do header */
+  --button-color: #5EE2CC; /* Cor dos botões */
+  --card-background: #FFFFFF; /* Fundo dos cartões de projeto */
+  --card-border-color: #D9D9D9;
+  --card-edited-text:#ABA9A9;
+  --font-family: 'Inter', sans-serif;
 }
 
-@media (prefers-color-scheme: dark) {
+/*@media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
     --foreground: #ededed;
+    --header-background: #181834;
+    --button-color: #5EE2CC;
+    --card-background: #333333; 
   }
-}
+}*/
 
 html,
 body {
@@ -17,9 +26,9 @@ body {
 }
 
 body {
+  font-family: var(--font-family);
   color: var(--foreground);
   background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

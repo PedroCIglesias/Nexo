@@ -1,11 +1,23 @@
-import Link from 'next/link';
+import { Flex, Heading, Text } from '@chakra-ui/react';
 
-export default function Header() {
+const Header = ({ userName }) => {
   return (
-    <header style={{ padding: '1rem', backgroundColor: '#f0f0f0' }}>
-      <nav>
-        <Link href="/">Home</Link> | <Link href="/dashboard">Dashboard</Link>
-      </nav>
-    </header>
+    <Flex
+      bg="var(--header-background)"
+      color="white"
+      justify="space-between"
+      align="center"
+      px="6"
+      py="4"
+      boxShadow="0px 2px 4px rgba(0, 0, 0, 0.1)"
+    >
+      <Heading size="lg">Nexo</Heading>
+      <Flex align="center">
+        <Text ml="2">{userName}</Text>
+      </Flex>
+    </Flex>
   );
-}
+};
+
+export default Header;
+    

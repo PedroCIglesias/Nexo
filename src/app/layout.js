@@ -1,5 +1,6 @@
 import './globals.css';
 import { Provider } from '@/components/ui/provider';
+import "@fontsource-variable/inter"
 
 export const metadata = {
   title: 'Micro-SaaS - Gráfico de Gantt',
@@ -9,7 +10,7 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body>
+      <body style={{ backgroundColor: 'var(--background)' }}>
         <Provider>{children}</Provider>
       </body>
     </html>
