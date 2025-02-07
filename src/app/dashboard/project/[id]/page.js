@@ -1,38 +1,28 @@
-"use client";
+'use client';
 
-import { useState, useEffect } from "react";
-import { useParams, useRouter } from "next/navigation";
-import { Box, Heading, Text, Button } from "@chakra-ui/react";
+import { Box, Flex } from '@chakra-ui/react';
+import ProjectHeader from '@/components/ProjectHeader';
+import PhaseList from '@/components/PhaseList';
+import GanttChart from '@/components/GanttChart';
 
 export default function ProjectPage() {
-  const params = useParams(); // Obtendo o ID do projeto pela URL
-  const router = useRouter();
-  const [project, setProject] = useState(null);
-
-  useEffect(() => {
-    if (!params?.id) return;
-
-    // Simulando busca do projeto
-    const mockProject = {
-      id: params.id,
-      name: `Projeto ${params.id}`,
-      lastEdited: "12/01/2025",
-      description: "Este é um projeto de exemplo.",
-    };
-    setProject(mockProject);
-  }, [params]);
-
-  if (!project) return <Text>Carregando...</Text>;
-
   return (
-    <Box p={6}>
-      <Heading mb={4}>{project.name}</Heading>
-      <Text fontSize="md" mb={4}>{project.description}</Text>
-      <Text fontSize="sm" color="gray.500">Última edição: {project.lastEdited}</Text>
+    <Flex direction="column" h="100vh">
+      {/* Header da página do projeto */}
+      <ProjectHeader />
 
-      <Button mt={6} colorScheme="teal" onClick={() => router.push("/dashboard")}>
-        Voltar para Dashboard
-      </Button>
-    </Box>
+      {/* Conteúdo principal */}
+      <Flex flex="1" p="6" gap="4">
+        {/* Lista de Fases e Tarefas */}
+        <Box flex="1.5">
+          <PhaseList />
+        </Box>
+
+        {/* Gráfico de Gantt */}
+        <Box flex="2">
+          <GanttChart />
+        </Box>
+      </Flex>
+    </Flex>
   );
 }
