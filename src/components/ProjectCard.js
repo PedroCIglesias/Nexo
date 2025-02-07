@@ -21,6 +21,7 @@ const ProjectCard = ({ project }) => {
       flexDirection="column" // Organizando os elementos verticalmente
       justifyContent="space-between" // Espaço entre elementos
       _hover={{ cursor: 'pointer', borderColor: 'blue.500', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)' }}
+      onClick={() => router.push(`/project/${project.id}`)} // Agora o card inteiro é clicável
     >
       {/* Miniatura do projeto */}
       <Box
@@ -62,7 +63,6 @@ const ProjectCard = ({ project }) => {
           color="white"
           backgroundColor="var(--button-color)" // Cor do botão
           _hover={{ backgroundColor: '#4DC4B4' }} // Cor ao passar o mouse
-          onClick={() => router.push(`/project/${project.id}`)}
         >
           Editar
         </Button>
