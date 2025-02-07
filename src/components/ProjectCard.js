@@ -21,7 +21,7 @@ const ProjectCard = ({ project }) => {
       flexDirection="column" // Organizando os elementos verticalmente
       justifyContent="space-between" // Espaço entre elementos
       _hover={{ cursor: 'pointer', borderColor: 'blue.500', boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.15)' }}
-      onClick={() => router.push(`/project/${project.id}`)} // Agora o card inteiro é clicável
+      onClick={() => router.push(`/dashboard/project/${project.id}`)} // Agora o card inteiro é clicável
     >
       {/* Miniatura do projeto */}
       <Box
