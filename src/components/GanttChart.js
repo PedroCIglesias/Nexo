@@ -1,75 +1,99 @@
 'use client';
 import { Box, Text, Flex } from '@chakra-ui/react';
 
-// Simulação de tarefas cadastradas
+// 🔹 Mock de tarefas cadastradas
 const tasks = [
   { id: 1, name: 'Tarefa 1', start: '2025-01-10', end: '2025-01-20', color: '#4DC4B4' },
   { id: 2, name: 'Tarefa 2', start: '2025-01-15', end: '2025-01-25', color: '#FF8C00' },
 ];
 
-// Função para gerar os dias corretamente alinhados
-const generateDaysOfMonth = (start) => {
-  const startDate = new Date(start);
-  const firstDay = startDate.getDate();
-  const lastDay = new Date(startDate.getFullYear(), startDate.getMonth() + 1, 0).getDate();
+// 🔹 Função para converter string de data para objeto Date sem alteração de fuso horário
+const parseDate = (dateStr) => new Date(dateStr);
+
+// 🔹 Obtém a data mais antiga para definir o início do gráfico
+const getFirstTaskDate = (tasks) => {
+  return new Date(Math.min(...tasks.map((task) => parseDate(task.start).getTime())));
+};
+
+// 🔹 Gera os dias do mês corretamente alinhados à esquerda com menor espaçamento e peso 400
+const generateDaysOfMonth = (start, end) => {
+  const startDate = parseDate(start);
+  console.log(startDate);
+  const endDate = parseDate(end);
+  console.log(endDate);
+
+  const totalDays = (endDate - startDate) / (1000 * 60 * 60 * 24) + 1; // Quantidade exata de dias
+  const firstDay = startDate.getDate()+1;
   
-  return Array.from({ length: lastDay - firstDay + 1 }, (_, i) => (
-    <Box key={i} flex="1" textAlign="center" fontSize="sm" fontWeight="bold">
+
+  return Array.from({ length: totalDays }, (_, i) => (
+    <Box
+      key={i}
+      minWidth="35px" // 🔹 Espaçamento reduzido
+      textAlign="left" // 🔹 Alinhado à esquerda
+      fontSize="sm"
+      fontWeight="400" // 🔹 Peso da fonte ajustado para 400
+      pl="0" // 🔹 Pequeno espaçamento à esquerda para evitar colagem
+      color="black"
+    >
       {firstDay + i}
     </Box>
   ));
 };
 
-// Função para converter data para posição na grade
-const dateToPosition = (date, start) => {
-  const startDate = new Date(start);
-  const currentDate = new Date(date);
-  return currentDate.getDate() - startDate.getDate();
+// 🔹 Converte data para posição correta no gráfico
+const dateToPosition = (date, firstDate) => {
+  const start = parseDate(date);
+  const first = parseDate(firstDate);
+  return Math.round((start - first) / (1000 * 60 * 60 * 24)); // Calcula os dias exatos
 };
 
 export default function GanttChart() {
-  // Descobre a data da primeira tarefa para alinhar o gráfico
-  const firstTaskDate = tasks.reduce((earliest, task) => {
-    const taskStart = new Date(task.start);
-    return taskStart < earliest ? taskStart : earliest;
-  }, new Date(9999, 11, 31));
+  const firstTaskDate = getFirstTaskDate(tasks);
+  const lastTaskDate = new Date(Math.max(...tasks.map((task) => parseDate(task.end).getTime())));
 
   return (
-    <Box bg="white" p="4" boxShadow="md" borderRadius="md">
-      {/* Cabeçalho com o nome do mês e os dias corretamente alinhados */}
+    <Box bg="white" p="4" boxShadow="md" borderRadius="md" width="100%" overflowX="auto">
+      {/* Cabeçalho do gráfico com os dias corretamente renderizados */}
       <Flex direction="column" mb="2">
-        <Text fontSize="lg" fontWeight="bold" textAlign="left">
+        <Text fontSize="lg" fontWeight="400" textAlign="left" mb="1">
           Janeiro
         </Text>
-        <Flex borderBottom="2px solid #E2E8F0" justify="flex-start">
-          {generateDaysOfMonth(firstTaskDate)}
+        <Flex overflowX="auto">
+          {generateDaysOfMonth(firstTaskDate, lastTaskDate)}
         </Flex>
       </Flex>
 
-      {/* Gráfico de Gantt */}
-      <Box position="relative" overflowX="auto" width="100%">
-        {tasks.map((task, index) => (
-          <Box
-            key={task.id}
-            position="absolute"
-            top={`${index * 40}px`} // Ajusta a posição de cada tarefa
-            left={`${dateToPosition(task.start, firstTaskDate) * 40}px`} // Alinha com os dias
-            width={`${(dateToPosition(task.end, firstTaskDate) - dateToPosition(task.start, firstTaskDate) + 1) * 40}px`}
-            height="30px"
-            bg={task.color}
-            borderRadius="5px"
-            display="flex"
-            alignItems="center"
-            justifyContent="center"
-            color="white"
-            fontSize="sm"
-            fontWeight="bold"
-            cursor="pointer"
-            _hover={{ opacity: 0.8 }}
-          >
-            {task.name}
-          </Box>
-        ))}
+      {/* Área do gráfico de Gantt */}
+      <Box position="relative" overflowX="auto" width="100%" height="100px">
+        {tasks.map((task, index) => {
+          const startPos = dateToPosition(task.start, firstTaskDate);
+          const endPos = dateToPosition(task.end, firstTaskDate);
+          const width = (endPos - startPos + 1) * 35; // 🔹 Ajustado conforme menor espaçamento
+
+          return (
+            <Box
+              key={task.id}
+              position="absolute"
+              top={`${index * 40}px`}
+              left={`${startPos * 35}px`} // 🔹 Mantém alinhamento com os números
+              width={`${width}px`}
+              height="30px"
+              bg={task.color}
+              borderRadius="5px"
+              display="flex"
+              alignItems="center"
+              justifyContent="center"
+              color="white"
+              fontSize="sm"
+              fontWeight="bold"
+              cursor="pointer"
+              _hover={{ opacity: 0.8 }}
+            >
+              {task.name}
+            </Box>
+          );
+        })}
       </Box>
     </Box>
   );
